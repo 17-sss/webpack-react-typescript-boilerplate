@@ -1,0 +1,17 @@
+// ** To use ThemeProvider, modify this file to match the properties of the theme.
+// SAMPLE
+import 'styled-components';
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    fontFamily: string;
+    fontWeight: {
+        [name : string]: string,
+    }
+    fontSize: {
+        [name : string]: string,
+    }
+    colors: {
+        [name : string]: string,
+    }
+  }
+}
