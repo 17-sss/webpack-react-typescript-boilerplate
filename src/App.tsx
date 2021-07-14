@@ -1,12 +1,5 @@
-import AppStyle from './util/styles/AppStyle';
+import React from 'react';
 
-const App = () => {
-  return (
-    <>
-      <AppStyle />
-      <div>APP PAGE</div>
-    </>
-  );
-};
+const App = () => <div>Test</div>;
 
 export default App;

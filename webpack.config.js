@@ -1,46 +1,41 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
-  mode: 'development', // or production
-  entry: './src/index.tsx',
-  output: {
-    filename: '[name].js',
-    path: path.resolve('./dist'),
+  mode,
+  entry: {
+    app: path.join(__dirname, 'src', 'index.tsx'),
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html', // 템플릿 경로
-      hash: true, //핑거 프린트
-    }),
-  ],
-
-  devtool: 'source-map', // hidden-source-map (production 모드에선 이거쓰기)
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
-      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       {
-        test: /\.(webp|jpg|png|jpeg)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]?[hash]', // 파일명 형식
-        },
+        test: /\.(ts|tsx)$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
     ],
   },
-
-  devServer: {
-    contentBase: path.resolve('./public'),
-    // publicPath: path.resolve("./public"),
+  output: {
     filename: '[name].js',
-    hot: true,
-    host: 'localhost',
-    port: 3000,
-    historyApiFallback: true,
-    // writeToDisk: true
+    path: path.resolve(__dirname, 'dist'),
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/public/index.html',
+      templateParameters: { // HTML 파일에서 사용될 변수들
+        env: process.env.NODE_ENV === 'production' ? '' : '[DEV]',
+      },
+      minify:   // 번들링된 HTML 파일에서 공백이 제거되고 주석이 삭제됨
+        process.env.NODE_ENV === 'production'
+          ? {
+              collapseWhitespace: true,
+              removeComments: true,
+            }
+          : false,
+    }),
+  ],
 };
