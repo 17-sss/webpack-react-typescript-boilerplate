@@ -20,6 +20,14 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      {
+        test: /\.(webp|jpg|png|jpeg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]?[hash]', // 파일명 형식
+        },
+      },
     ],
   },
   output: {
@@ -53,7 +61,7 @@ module.exports = {
     host: 'localhost',    // 개발환경에서 도메인을 맞추어야 하는 상황에서 사용
     port: 3000,           // 개발 서버 포트 번호 설정
     historyApiFallback: true, // 히스토리 API를 사용하는 SPA 개발시 설정. 404가 발생하면 index.html로 리다이렉트
-    writeToDisk: true, // true시 devServer로 생성되는 컴파일된 파일을 저장함. 저장은 설정한 output.path 디렉토리에 기록 (기본값 false)
+    writeToDisk: mode === "production", // true시 devServer로 생성되는 컴파일된 파일을 저장함. 저장은 설정한 output.path 디렉토리에 기록 (기본값 false)
 
     /* 
       > 추가 옵션 끄적 끄적 👀
